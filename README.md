@@ -5,6 +5,6 @@ ferramenta para visualização de informações de hardware
 pciutils
 
 <h3>Detalhes</h3>
-Essa ferramenta podera ser encontrada no Mazon OS
+Essa ferramenta podera ser encontrada por padrão no Mazon OS
 
 http://mazonos.com/
