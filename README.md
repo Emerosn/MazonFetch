@@ -3,7 +3,7 @@ ferramenta para visualização de informações de hardware
 
 <h2>Dependeces</h2>
 pciutils
-<p>obs a dependencia acima é temporaril</p> 
+<p>Obs: a dependencia acima é temporaril</p> 
 <h2>Detalhes</h2>
 Essa ferramenta podera ser encontrada por padrão no Mazon OS
 
