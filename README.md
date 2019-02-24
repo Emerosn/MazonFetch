@@ -15,7 +15,7 @@ mazonfetch.sh
 
 copie e cole o codigo abaixo no terminal
 
-mv mazonfetch.sh mazonfetch \
+mv mazonfetch.sh mazonfetch\
 cp mazonfetch /usr/bin
 
 
