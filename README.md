@@ -8,3 +8,14 @@ pciutils
 Essa ferramenta podera ser encontrada por padrão no Mazon OS
 
 http://mazonos.com/
+
+<h4>Instalação</h4>
+abra o terminal no diretorio em que está o 
+mazonfetch.sh 
+
+copie e cole o codigo abaixo no terminal
+
+mv mazonfetch.sh mazonfetch \
+cp mazonfetch /usr/bin
+
+
