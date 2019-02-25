@@ -76,13 +76,7 @@ _fetch_info(){
 
 		fi
 		)
-	f_gpu=$(
-		if [ -n lspci ]; then
-			lspci | sed -n 15p| sed 's/.*GM107//;s/ *.//;s/].*//'
-		else
-			lspci | sed -n 2p|sed 's/.*: //g;s/ C.*Family//g;s/C.*//g;'
-		fi
-		)
+	f_gpu=$(glxinfo | grep  -e "Device" | sed 's/.*: //g;s/(*.x.*)//g')
 	f_men=$(echo $(cat  /proc/meminfo | sed -n '1p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
 	f_menfree=$(echo $(cat  /proc/meminfo | sed -n '2p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
 	f_ach=$(getconf LONG_BIT)"-bit"
