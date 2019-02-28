@@ -11,7 +11,9 @@ http://mazonos.com/
 <h3>Instalação</h3>
 abra o terminal no diretorio em que está o 
 mazonfetch.sh 
-
+de permição de execução
+exemplo:
+chmod +x nome_do_arquivo.sh
 copie e cole o codigo abaixo no terminal
 
 mv mazonfetch.sh mazonfetch && cp mazonfetch /usr/bin
