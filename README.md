@@ -13,7 +13,7 @@ abra o terminal no diretorio em que está o
 mazonfetch.sh 
 de permição de execução
 exemplo:
-chmod +x nome_do_arquivo.sh
+<p>chmod +x nome_do_arquivo.sh</p>
 copie e cole o codigo abaixo no terminal
 
 mv mazonfetch.sh mazonfetch && cp mazonfetch /usr/bin
