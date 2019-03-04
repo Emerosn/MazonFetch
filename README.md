@@ -16,6 +16,6 @@ exemplo:
 <p>chmod +x nome_do_arquivo.sh</p>
 copie e cole o codigo abaixo no terminal
 
-mv mazonfetch.sh mazonfetch && cp mazonfetch /usr/bin
+mv mazonfetch.sh /usr/bin/mazonfetch
 
 
