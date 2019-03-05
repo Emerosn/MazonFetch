@@ -69,7 +69,19 @@ _fetch_info(){
 	f_font=$(fc-match | sed 's/\..*//g')
 	f_cpu=$(cat /proc/cpuinfo | grep -o 'model name.*' | sed -n '1p' | sed 's/.*:.//g;s/(.)//g')
 	f_tcpu=$(sensors | grep "Package id 0:"|sed 's/.*:  +//g;s/ .*//')
-	f_gpu=$(glxinfo |grep  -e "renderer string" | sed 's/.*: //g;s/(*.x.*)//g;s/(.*//g;s/\/.*//')
+	f_gpu=$( 
+			nvidia=$(which nvidia-settings)
+			gpu=$(glxinfo | grep "Intel")
+			amd=$(glxinfo | grep "Device:")
+			if [ -x "$nvidia" ]; then
+			glxinfo |grep  -e "renderer string" | sed 's/.*: //g;s/(*.x.*)//g;s/(.*//g;s/\/.*//'
+
+			elif [ -x "$gpu" ]; then
+				echo "Intel Graphics"
+			elif [ -x "$amd" ]; then
+				echo "AMD Graphics"
+		fi
+	)
 	f_men=$(echo $(cat  /proc/meminfo | sed -n '1p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
 	f_menfree=$(echo $(cat  /proc/meminfo | sed -n '2p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
 	f_ach=$(getconf LONG_BIT)"-bit"
@@ -103,27 +115,29 @@ Architeture: $f_ach
 Browser default: ${f_nave^}
 EOF
 }
-
 mazon=$( 
-echo -e "     \033[0m              lXMNd                 \033[38m	 "
-echo -e "     .cdxdl'    .xWMMMMMWo                 \033[39m	 "
-echo -e "     0MMMMMMMWOcOMMMMM0NMMMX                \033[39m	 "
-echo -e "    lMMMMMMMMMMMMMMMMX  MMMM'               \033[39m	 "
-echo -e "    dMMMM  MMMMMMMMMMMMMMMMMo               \033[39m 	"
-echo -e "    ;MMMMWWMMMMMk\033[1m\033[33mWNNW\033[39mMMMMMMMM0               \033[39m 	"
-echo -e "     .cKMMMMMMM\033[33m0xxxxx\033[39m0MMMMMMK                     "
-echo -e "        .OMMMMN\033[33mxxxxxxx\033[39mMMMMN0\033[1m\033[32m:,,,,..               \033[39m"
-echo -e "   ...... xMMMWO\033[33mxxxxxx\033[39mNWKx\033[1m\033[32m:,,;,...'',,;;;;,.      \033[39m"
-echo -e " ..........WMMMMXk\033[33mxxxx\033[39mc\033[1m\033[32mx,,;;;;;;;;;;;;,'.....     \033[39m"
-echo -e " ......... :kNMMMWk\033[33mxxx\033[32m\033[1m:''..;;;;;;;;;;;'...''''.   \033[39m"
-echo -e " ...... .....':do;',d\033[33mx\033[39m\033[1m\033[32m, .',;;;;;;;;;;;;;;;;;;;;,. \033[39m"
-echo -e " \033[32m              ',...  ;'';;;;;;;;;;;;;;;;;;;;;;;;;' \033[39m"
-echo -e " \033[32m             ,;,..  .,;;;;;;;;;;;;;;;;;;;;;;;'..   \033[39m"
-echo -e " \033[32m             ..   .;;;;;;;;;;;,'...;;;;;;;;;;;,.   \033[39m"
-echo -e " \033[32m                  ;;;;;;;;;;'.  .,;;;;;;;;;;;;;;.  \033[39m"
-echo -e " \033[32m                   .';;;;;,  .,;;;;;;;;;;;;;;;;,   \033[39m"
-echo -e " \033[32m                      ..'.  .'',,,;;;;;;;;;;;;;;   \033[39m"
-echo -e " \033[32m                                    ...',;;;;;;;.  \033[39m"
-echo -e " \033[32m                                          ..,,,'   \033[39m"
+echo -e "                                                            \033[39m"
+echo -e "           \033[1m\033[39m.,coooooooddddc;.                                \033[39m"
+echo -e "        \033[39m'lOx:.           .;okd;                             \033[39m"
+echo -e "      \033[39mcO0l.                  .o0o.                          \033[39m"
+echo -e "    \033[39m;O0O'                      .d0l                         \033[39m"
+echo -e "   \033[39md000.                         l0k.                       \033[39m"
+echo -e "  \033[39md000l                     ..    o0k,\033[32m.                     \033[39m"
+echo -e " \033[39m;0000.      .,,        'dXMMMWO:  xkl.\033[32m'',;;;;;;,'.         \033[39m"
+echo -e " \033[39mx0000    .kMMMMMMXx;.;XMMMMMWMMMW,'do\033[32m,,;;;;;;;;;;;,.       \033[39m"
+echo -e " \033[39m00000    XMMMMMMMMMMMMMMMMX  dMMMX cc\033[32m;;;;,'...    ..       \033[39m"
+echo -e " \033[39mx0000   .MMMMx  WMMMMMMMMMMOkNMMMM '\033[32m;;;;;;,,,,,,;;;;;,.    \033[39m"
+echo -e " \033[39m;0000    WMMMO:oMMMMMMMMMMMMMMMMMM.\033[32m.;;;;;;;;;;;;;;;;;;;,.  \033[39m"
+echo -e "  \033[39md00O    kWMMMMMMMMMX\033[33mOkxxO\033[39mKMMMMMMN; \033[32m,;;;;;;;;;;;;;;;;;;;;,.\033[39m"
+echo -e "   \033[39md0x    :KXWMMMMMMX\033[33mxxxxxxx\033[39mNMMMMNK: \033[32m,;;;;;;;;;;;;;;;;;;;;;.\033[39m"
+echo -e "    \033[39m;O;   .0KKXNMMMMX\033[33mdxxxxxx\033[39m0MMWKOc,\033[32m,;;;;;;;;;;;;;;;;'..    \033[39m"
+echo -e "      \033[39m:o.  :kKKKKXNWMl\033[33mlxxxxx\033[39mkW0o;,,'\033[32m..;;;;;;;;;;;;;;;;;'.   \033[39m"
+echo -e "        \033[39m.;,,,;lxOKKKKx;:\033[33mdxxxx\033[39m:,,. \033[32m ..,;;;;;;;;;;;;;;;;;;;,  \033[39m"
+echo -e "           \033[39m..'',,;codx,..:\033[33mxxo..\033[32m..,;;;;;;;;;;;;;;;;;;;;;;,.  \033[39m"
+echo -e "                \033[32m..,,,,,,;;;,\033[33mo\033[32m.,;;;;;;;;;;;;;;;;;;;;;;;;;'   \033[39m"
+echo -e "                    \033[32m.',;;'.  ,;;;;;;;;;;;;;;;;;;;;;;;;;;;.  \033[39m"
+echo -e "                        \033[32m.         .....',;;;;;;;;;;;;;;;;,  \033[39m"
+echo -e "                                           \033[32m...',;;;;;;;;;,  \033[39m"
+echo -e "                                                 \033[32m..',;;,.   \033[39m"
 )
 paste <(printf "%s" "$mazon") <(_set_info)
