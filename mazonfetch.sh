@@ -69,7 +69,7 @@ _fetch_info(){
 	f_font=$(fc-match | sed 's/\..*//g')
 	f_cpu=$(cat /proc/cpuinfo | grep -o 'model name.*' | sed -n '1p' | sed 's/.*:.//g;s/(.)//g')
 	f_tcpu=$(sensors | grep "Package id 0:"|sed 's/.*:  +//g;s/ .*//')
-	f_gpu=$(glxinfo |grep  -e "Device" | sed 's/.*: //g;s/(*.x.*)//g;s/(.*//')
+	f_gpu=$(glxinfo |grep  -e "renderer string" | sed 's/.*: //g;s/(*.x.*)//g;s/(.*//g;s/\/.*//')
 	f_men=$(echo $(cat  /proc/meminfo | sed -n '1p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
 	f_menfree=$(echo $(cat  /proc/meminfo | sed -n '2p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
 	f_ach=$(getconf LONG_BIT)"-bit"
