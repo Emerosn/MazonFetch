@@ -80,6 +80,8 @@ _fetch_info(){
 				echo "Intel Graphics"
 			elif [ -x "$amd" ]; then
 				echo "AMD Graphics"
+			else
+				glxinfo | grep "renderer string"| sed 's/.*: //'
 		fi
 	)
 	f_men=$(echo $(cat  /proc/meminfo | sed -n '1p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
