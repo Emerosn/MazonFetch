@@ -12,7 +12,7 @@ http://mazonos.com/
 abra o terminal no diretorio em que está o 
 mazonfetch.sh 
 de permição de execução
-exemplo:
+exemplo:<br>
 <code>
 chmod +x nome_do_arquivo.sh
 //copie e cole o codigo abaixo no terminal
