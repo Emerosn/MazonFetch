@@ -70,15 +70,14 @@ _fetch_info(){
 	f_cpu=$(cat /proc/cpuinfo | grep -o 'model name.*' | sed -n '1p' | sed 's/.*:.//g;s/(.)//g')
 	f_tcpu=$(sensors | grep "Package id 0:"|sed 's/.*:  +//g;s/ .*//')
 	f_gpu=$( 
-			nvidia=$(which nvidia-settings)
-			gpu=$(glxinfo | grep "Intel")
-			amd=$(glxinfo | grep "Device:")
+			nvidia=$(which nvidia-settings 2>&1 > /dev/null &)
+			gpu=$(glxinfo | grep "Vendor"|awk '{print $2}')
+			amd=$(glxinfo | grep "Vendor"|awk '{print $2}')
 			if [ -x "$nvidia" ]; then
 			glxinfo |grep  -e "renderer string" | sed 's/.*: //g;s/(*.x.*)//g;s/(.*//g;s/\/.*//'
-
-			elif [ -x "$gpu" ]; then
+			elif [ "$gpu" == "Intel" ]; then
 				echo "Intel Graphics"
-			elif [ -x "$amd" ]; then
+			elif ["$amd" == "Amd" ]; then
 				echo "AMD Graphics"
 			else
 				glxinfo | grep "renderer string"| sed 's/.*: //'
