@@ -14,8 +14,7 @@ mazonfetch.sh
 de permição de execução
 exemplo:<br>
 <code>
-chmod +x nome_do_arquivo.sh
-//copie e cole o codigo abaixo no terminal
-mv mazonfetch.sh /usr/bin/mazonfetch/>
+chmod +x nome_do_arquivo.sh &&
+mv mazonfetch.sh /usr/bin/mazonfetch 
 
 </code>
