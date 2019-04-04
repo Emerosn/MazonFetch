@@ -156,7 +156,7 @@ _set_info()
     _fetch_info
 	inf[0]="${green}  $f_title${reset}"
 	inf[1]="${red}  $ql${reset}"
-	inf[2]="${green}Distro     ${white}:${yellow} $f${reset}"
+	inf[2]="${blue}Distro     ${white}:${yellow} $f${reset}"
 	inf[3]="${blue}OS         ${white}:${yellow} $f_os${reset}"
 	inf[4]="${blue}Kernel Name${white}:${yellow} $f_kname${reset}"
 	inf[5]="${blue}Kernel     ${white}:${yellow} $f_kv${reset}"
