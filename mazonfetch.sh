@@ -117,7 +117,7 @@ _fetch_info(){
 #	f_uptime=$(uptime | awk '{print $3}'|tr "," " ")" min"
 	f_uptime=$(uptime | awk '{print $1, $2}')
 	f_shell=$(basename $SHELL)
-	f_resolucao=$(cat /var/log/Xorg.0.log | grep "Output LVDS1" | sed -n "2p"| sed 's/.*mode //g;s/on.*//')
+	f_resolucao=$(cat /var/log/Xorg.0.log | grep -E "Output .* mode"|awk '/mode / {print $10}'|paste - - )
 	f_desk=$XDG_CURRENT_DESKTOP
 	f_font=$(fc-match | sed 's/\..*//g')
 	f_cpu=$(cat /proc/cpuinfo | grep -o 'model name.*' | sed -n '1p' | sed 's/.*:.//g;s/(.)//g;s/@//g;s/CPU//g;s/(.*)//g;s/  / /g;')
