@@ -62,8 +62,8 @@
 # _fetch_info()
 # _set_info()
 # _mazon()
-# arr=()
-# inf=()
+# _arr=()
+# _inf=()
 
 #-------------------------->
 #------TESTES-------------->
@@ -104,46 +104,45 @@ else
 	yellow="\e[1;33m";
 fi;
 
-arr=()
-inf=()
+_arr=()
+_inf=()
 
 _fetch_info(){
 	exec > /dev/null 2>&1
 	f_title=$USER@$HOSTNAME
-	f=$(uname -a | awk '{printf $2}' | sed 's/os/ OS/g')
+	f=$(sed 's/os/ OS/g' <<< $(awk '{printf $2}' <<< $(uname -a)))
 	f_os=$(uname -o)
-	f_kname=$(uname -a | awk '{print $1}')
+	f_kname=$(awk '{print $1}' <<< $(uname -a))
 	f_kv=$( uname -a | awk '{print $3}')
-#	f_uptime=$(uptime | awk '{print $3}'|tr "," " ")" min"
-	f_uptime=$(uptime | awk '{print $1, $2}')
+	f_uptime=$(tr "," " " <<< $(awk '{print $3, $2}' <<< $(uptime)))
+#	f_uptime=$(uptime | awk '{print $1, $2}')
 	f_shell=$(basename $SHELL)
-	f_resolucao=$(cat /var/log/Xorg.0.log | grep -E "Output .* mode"|awk '/mode / {print $10}'|paste - - )
+	f_resolucao=$(paste - - <<< $(awk '/mode / {print $10}' <<< $(grep -E "Output .* mode" < "/var/log/Xorg.0.log")))
 	f_desk=$XDG_CURRENT_DESKTOP
-	f_font=$(fc-match | sed 's/\..*//g')
-	f_cpu=$(cat /proc/cpuinfo | grep -o 'model name.*' | sed -n '1p' | sed 's/.*:.//g;s/(.)//g;s/@//g;s/CPU//g;s/(.*)//g;s/  / /g;')
-	f_tcpu=$(sensors | grep "Package id 0:"|sed 's/.*:  +//g;s/ .*//')
+	f_font=$(sed 's/\..*//g' <<< $(fc-match))
+	f_cpu=$(sed 's/.*:.//g;s/(.)//g;s/@//g;s/CPU//g;s/(.*)//g;s/  / /g;' <<< $(sed -n '1p' <<< $(grep -o 'model name.*' < "/proc/cpuinfo")))
+	f_tcpu=$(sed 's/.*:  +//g;s/ .*//' <<< $(grep "Package id 0:" <<< $(sensors)))
 	f_gpu=$(
 
 			nvidia=$(which nvidia-settings 2>&1 > /dev/null &)
-			gpu=$(glxinfo | grep "Vendor"|awk '{print $2}' )
-			amd=$(glxinfo | grep "Vendor"|awk '{print $2}' )
+			gpu=$(awk '{print $2}' <<< $(grep "Vendor" <<< $(glxinfo)))
+			amd=$(awk '{print $2}' <<< $(grep "Vendor" <<< $(glxinfo)))
 		if [ -x "$nvidia" ]; then
-            cat /var/log/Xorg.0.log | grep "NVIDIA(0): NVIDIA"| sed 's/.*GPU //g;s/(.*)//'
-            echo ""
+            sed 's/.*GPU //g;s/(.*)//' <<< $(grep "NVIDIA(0): NVIDIA" < "/var/log/Xorg.0.log")
 		elif [ "$gpu" == "Intel" ]; then
-			cat /var/log/Xorg.0.log | grep "Integrated Graphics Chipset:" | sed 's/.*: //'
+			sed 's/.*: //'<<< $(grep "Integrated Graphics Chipset:" < "/var/log/Xorg.0.log")
  
   		elif ["$amd" == "Amd" ]; then
-			echo "AMD Graphics"
+			printf "%s\n" "AMD Graphics"
 		else
-			glxinfo | grep "renderer string"| sed 's/.*: //g;s/(.*)//g;'
+			 sed 's/.*: //g;s/(.*)//g;' <<< $(grep "renderer string" <<< $(glxinfo ))
 		fi
 	)
 
-	f_mem=$(echo $(cat /proc/meminfo | sed -n '1p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
-	f_memfree=$(echo $(cat  /proc/meminfo | sed -n '2p' |tr -d [A-Za-z:' ']) / 1024 | bc)" MB"
+	f_mem=$(bc <<< $(printf "%i"$(tr -d [A-Za-z:' '] <<< $(sed -n '1p' < "/proc/meminfo"))/1024))" MB"
+	f_memfree=$(bc <<< $(printf "%i"$(tr -d [A-Za-z:' '] <<< $(sed -n '2p' < "/proc/meminfo"))/1024))" MB"
 	f_ach=$(getconf LONG_BIT)"-bit"
-	f_nave=$(xdg-settings get default-web-browser|sed 's/userapp-//;s/\..*//g')
+	f_nave=$(sed 's/userapp-//;s/\..*//g'<<< $(xdg-settings get default-web-browser))
 	f_char=$(expr length "$f_title") ql=
 	for i in $(seq 1 $f_char); do
 		ql="$ql─"
@@ -154,48 +153,48 @@ _fetch_info(){
 _set_info()
 {
     _fetch_info
-	inf[0]="${green}  $f_title${reset}"
-	inf[1]="${red}  $ql${reset}"
-	inf[2]="${blue}Distro     ${white}:${yellow} $f${reset}"
-	inf[3]="${blue}OS         ${white}:${yellow} $f_os${reset}"
-	inf[4]="${blue}Kernel Name${white}:${yellow} $f_kname${reset}"
-	inf[5]="${blue}Kernel     ${white}:${yellow} $f_kv${reset}"
-	inf[6]="${blue}Uptime     ${white}:${yellow} $f_uptime${reset}"
-	inf[7]="${blue}Shell      ${white}:${yellow} $f_shell${reset}"
-	inf[8]="${blue}Resolution ${white}:${yellow} $f_resolucao${reset}"
- 	inf[9]="${blue}Desktop    ${white}:${yellow} $f_desk${reset}"
-	inf[10]="${blue}Fonte      ${white}:${yellow} $f_font${reset}"
-	inf[11]="${blue}CPU        ${white}:${yellow} $f_cpu $f_tcpu${reset}"
-	inf[12]="${blue}Core(s)    ${white}:${yellow} $(nproc)${reset}"
-	inf[13]="${blue}GPU        ${white}:${yellow} $f_gpu${reset}"
-	inf[14]="${blue}Mem RAM    ${white}:${yellow} $(free -h | grep Mem | awk '{print $2 }')${reset}"
-	inf[15]="${blue}Mem free   ${white}:${yellow} $(free -h | grep Mem | awk '{print $4 }')${reset}"
-	inf[16]="${blue}Architetura${white}:${yellow} $f_ach${reset}"
-	inf[17]="${blue}Browser    ${white}:${yellow} $f_nave${reset}"
+	_inf[0]="${green}  $f_title${reset}"
+	_inf[1]="${red}  $ql${reset}"
+	_inf[2]="${blue}Distro     ${white}:${yellow} $f${reset}"
+	_inf[3]="${blue}OS         ${white}:${yellow} $f_os${reset}"
+	_inf[4]="${blue}Kernel Name${white}:${yellow} $f_kname${reset}"
+	_inf[5]="${blue}Kernel     ${white}:${yellow} $f_kv${reset}"
+	_inf[6]="${blue}Uptime     ${white}:${yellow} $f_uptime${reset}"
+	_inf[7]="${blue}Shell      ${white}:${yellow} $f_shell${reset}"
+	_inf[8]="${blue}Resolution ${white}:${yellow} $f_resolucao${reset}"
+ 	_inf[9]="${blue}Desktop    ${white}:${yellow} $f_desk${reset}"
+	_inf[10]="${blue}Fonte      ${white}:${yellow} $f_font${reset}"
+	_inf[11]="${blue}CPU        ${white}:${yellow} $f_cpu [$f_tcpu]${reset}"
+	_inf[12]="${blue}Core(s)    ${white}:${yellow} $(nproc)${reset}"
+	_inf[13]="${blue}GPU        ${white}:${yellow} $f_gpu${reset}"
+	_inf[14]="${blue}Mem RAM    ${white}:${yellow} $f_mem${reset}"
+	_inf[15]="${blue}Mem free   ${white}:${yellow} $f_memfree${reset}"
+	_inf[16]="${blue}Architetura${white}:${yellow} $f_ach${reset}"
+	_inf[17]="${blue}Browser    ${white}:${yellow} $f_nave${reset}"
 }
 
 _mazon(){
-arr[0]="${green}	       ,';;;;;;;;;                ${reset}"
-arr[1]="${green}         .',,,;;;;;;;     ,,,,,'.         ${reset}"
-arr[2]="${green}      .,;;;;;;,,;;;    ;;;;;;;;;;,'.      ${reset}"
-arr[3]="${green}    .,;;;;;;;;;;;;;,''...',,;,,'.....     ${reset}"
-arr[4]="${green}  .,;;;;;;;;;;;,..                        ${reset}"
-arr[5]="${green}     ';;;;;;;,.                  .,;;;;,  ${reset}"
-arr[6]="${green}  ;;;;;;;;;;,.                     ';;;;; ${reset}"
-arr[7]="${green}';;;;;;;;;;;.                       ,;;;;'${reset}"
-arr[8]="${green},;;;;;;;;;;;      ${white}.''.      cONMWO:  ${green},;;;;${reset}"
-arr[9]="${green},;;;;;;;;;;,    ${white}xWMMMMNkc,kMMMMKNMMW,${green}.;;;;${reset}"
-arr[10]="${green}.;;;;;;;;;;,   ${white}dMMMWXMMMMMMMMM0 .WMM0 ${green},;;'${reset}"
-arr[11]="${green} ,;;;;;;;;;,   ${white}OMMM' xMMMMMMMMMMMMMMN ${green},;; ${reset}"
-arr[12]="${green}  ,;;;;;,..    ${white}:MMMMMMMMMN${yellow}K00K${white}NMMMMMN..'  ${reset}"
-arr[13]="${green}   ';;    ''   ${white}.KXWMMMMMX${yellow}xxxxxx${white}WMMMN0.    ${reset}"
-arr[14]="${green}       .,;;,.   ${white}xKKXNMMMK${yellow}dxxxxx${white}XMWKx;     ${reset}"
-arr[15]="${green}        ......  ${white}.ok0KKXNWc${yellow}lxxxx${white}Okc'.      ${reset}"
-arr[16]="${green}                 ${white}.',cdkOKd,;${yellow}oxx${white}c.         ${reset}"
-arr[17]="${green}                      ${white}....   ${yellow}.d.          ${reset}"
+_arr[0]="${green}	       ,';;;;;;;;;                ${reset}"
+_arr[1]="${green}         .',,,;;;;;;;     ,,,,,'.         ${reset}"
+_arr[2]="${green}      .,;;;;;;,,;;;    ;;;;;;;;;;,'.      ${reset}"
+_arr[3]="${green}    .,;;;;;;;;;;;;;,''...',,;,,'.....     ${reset}"
+_arr[4]="${green}  .,;;;;;;;;;;;,..                        ${reset}"
+_arr[5]="${green}     ';;;;;;;,.                  .,;;;;,  ${reset}"
+_arr[6]="${green}  ;;;;;;;;;;,.                     ';;;;; ${reset}"
+_arr[7]="${green}';;;;;;;;;;;.                       ,;;;;'${reset}"
+_arr[8]="${green},;;;;;;;;;;;      ${white}.''.      cONMWO:  ${green},;;;;${reset}"
+_arr[9]="${green},;;;;;;;;;;,    ${white}xWMMMMNkc,kMMMMKNMMW,${green}.;;;;${reset}"
+_arr[10]="${green}.;;;;;;;;;;,   ${white}dMMMWXMMMMMMMMM0 .WMM0 ${green},;;'${reset}"
+_arr[11]="${green} ,;;;;;;;;;,   ${white}OMMM' xMMMMMMMMMMMMMMN ${green},;; ${reset}"
+_arr[12]="${green}  ,;;;;;,..    ${white}:MMMMMMMMMN${yellow}K00K${white}NMMMMMN..'  ${reset}"
+_arr[13]="${green}   ';;    ''   ${white}.KXWMMMMMX${yellow}xxxxxx${white}WMMMN0.    ${reset}"
+_arr[14]="${green}       .,;;,.   ${white}xKKXNMMMK${yellow}dxxxxx${white}XMWKx;     ${reset}"
+_arr[15]="${green}        ......  ${white}.ok0KKXNWc${yellow}lxxxx${white}Okc'.      ${reset}"
+_arr[16]="${green}                 ${white}.',cdkOKd,;${yellow}oxx${white}c.         ${reset}"
+_arr[17]="${green}                      ${white}....   ${yellow}.d.          ${reset}"
 	for i in $(seq 0 21);
 	do
-		echo -e "${arr[$i]}  ${inf[$i]}"
+		printf "%s\n%s""${_arr[$i]}  ${_inf[$i]}"
 	done
 
 }
