@@ -17,6 +17,6 @@ exemplo:<br>
 chmod +x nome_do_arquivo.sh &&
 mv mazonfetch.sh /usr/bin/mazonfetch 
   
-<img src="https://scontent-sea1-1.cdninstagram.com/vp/dfe75e82024865d2454e6335be195563/5D486A5E/t51.2885-15/e35/53430105_154813155512282_6794510294669734083_n.jpg?_nc_ht=scontent-sea1-1.cdninstagram.com&se=8&ig_cache_key=MTk5MjM1NTkxMzM5NDI1ODM2OA%3D%3D.2" height="450" width="800">
+<img src="https://scontent-sea1-1.cdninstagram.com/vp/4937129b685b8880f5f9bce7793f3c90/5DA5E4E6/t51.2885-15/e35/61990040_2708172672587037_7469143626633545577_n.jpg?_nc_ht=scontent-sea1-1.cdninstagram.com&ig_cache_key=MjA2OTE0OTcxMDY5Mzc4NTE2MQ%3D%3D.2" height="450" width="800">
 
 </code>
