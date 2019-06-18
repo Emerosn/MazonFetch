@@ -16,5 +16,7 @@ exemplo:<br>
 <code>
 chmod +x nome_do_arquivo.sh &&
 mv mazonfetch.sh /usr/bin/mazonfetch 
+  
+<img src="https://www.instagram.com/p/By3GLL1AV5J/?utm_source=ig_web_copy_link" alt="Smiley face" height="42" width="42">
 
 </code>
