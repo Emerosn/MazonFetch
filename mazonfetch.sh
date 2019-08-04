@@ -117,7 +117,7 @@ _fetch_info(){
 	f_kv=$( uname -a | awk '{print $3}')
 #	f_uptime=$(tr "," " " <<< $(awk '{print $3, $2}' <<< $(uptime)))
 #	f_uptime=$(uptime | awk '{print $1, $2}')
-	f_uptime=$( tr ' ' ': '<<< $(awk '{print $3,$5 $2}' <<< $(uptime)))
+	f_uptime=$(tr ',' ':' <<< $(sed 's/hour/H/;s/minutes/M/;s/days/D/;s/year/Y/;'<<< $(awk '{print $2,$3 $4,$5}' <<< $( uptime -p))))
 	f_shell=$(basename $SHELL)
 	f_resolucao=$(paste - - <<< $(awk '/mode / {print $10}' <<< $(grep -E "Output .* mode" < "/var/log/Xorg.0.log")))
 	f_desk=$XDG_CURRENT_DESKTOP
