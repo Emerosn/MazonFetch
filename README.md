@@ -16,7 +16,9 @@ exemplo:<br>
 <code background:#FFFFFF >
 chmod +x nome_do_arquivo.sh &&
 mv mazonfetch.sh /usr/bin/mazonfetch 
-</code>  
-<img src="http://mazonos.com/forum/download/file.php?id=706" height="450" width="800">
+</code>
+<br>  
 <img src="http://mazonos.com/forum/download/file.php?id=704">
+<img src="http://mazonos.com/forum/download/file.php?id=706" height="450" width="800">
+
 
