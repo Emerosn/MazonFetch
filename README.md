@@ -13,7 +13,7 @@ abra o terminal no diretorio em que está o
 mazonfetch.sh 
 de permição de execução
 exemplo:<br>
-<code>
+<code background=red >
 chmod +x nome_do_arquivo.sh &&
 mv mazonfetch.sh /usr/bin/mazonfetch 
   
