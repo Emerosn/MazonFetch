@@ -3,7 +3,7 @@ ferramenta para visualização de informações de hardware
 
 <h2>Dependeces</h2>
 not dependeces
-<h2>Detalhes</h2>
+<h2 id="desc">Detalhes</h2>
 Essa ferramenta podera ser encontrada por padrão no Mazon OS
 
 http://mazonos.com/
